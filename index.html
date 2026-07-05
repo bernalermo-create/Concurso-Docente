@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bootcamp Concurso Docente Colombia V6</title>
+<style>
+:root{
+  --bg:#0b1020;--panel:#131a2e;--panel2:#1a2340;--line:#2d3a66;--txt:#eef3ff;--muted:#aeb9d8;
+  --accent:#4f8cff;--ok:#1fbf75;--warn:#f2b43c;--bad:#ff5f6d;--violet:#8b7bff;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#121a30);color:var(--txt)}
+header{padding:24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,16,32,.95);backdrop-filter: blur(8px);z-index:20}
+h1,h2,h3{margin:.2rem 0} .wrap{max-width:1380px;margin:auto;padding:18px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1.2fr .8fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+label{display:block;margin:10px 0 6px;color:var(--muted);font-size:.95rem}
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#0e152a;color:var(--txt)}
+button{border:none;border-radius:12px;padding:11px 14px;background:var(--accent);color:white;font-weight:700;cursor:pointer}
+button.secondary{background:#243257} button.good{background:var(--ok)} button.warn{background:var(--warn);color:#111}
+button.bad{background:var(--bad)} .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.kpi{padding:14px;border-radius:16px;background:#0e152a;border:1px solid var(--line)}
+.kpi .n{font-size:1.7rem;font-weight:800}
+.small{font-size:.92rem;color:var(--muted)} .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#0f1730;border:1px solid var(--line);margin:4px 6px 0 0}
+table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid #243257;text-align:left;vertical-align:top}
+.progress{height:12px;background:#0e152a;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.progress > span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--violet))}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.nav button{background:#1a2444}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#101833}
+summary{cursor:pointer;font-weight:700}
+.badge{font-size:.8rem;padding:4px 8px;border-radius:999px;background:#18264d;border:1px solid var(--line)}
+hr{border:none;border-top:1px solid var(--line);margin:16px 0}
+</style>
+
+<script>
+window.BOOTCAMP_SHEET_CONFIG = {
+  SHEET_ID: "1UhYVKzGJkA_QtDwWkpI2oFfTO8-QNgujPbZ7kRdYuVI",
+  WEB_APP_URL: "https://script.google.com/macros/s/AKfycbx8kP0YY2hBF7eg6OVvrW1NrIz2iraUrKoZ9PCgfhKJNwUhGTGD1rrZoz9eNXZVlOpQDg/exec"
+};
+</script>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Bootcamp Concurso Docente Colombia V6</h1>
+    <div class="small">Versión integral para docente de primaria · estudio, simulacros, analítica, retroalimentación y sincronización con Google Sheets</div>
+    <div class="nav">
+      <button onclick="go('perfil')">Perfil</button>
+      <button onclick="go('diagnostico')">Diagnóstico</button>
+      <button onclick="go('modulos')">Módulos</button>
+      <button onclick="go('plan')">Plan 16 semanas</button>
+      <button onclick="go('simulador')">Simulador</button>
+      <button onclick="go('banco')">Banco</button>
+      <button onclick="go('casos')">Casos</button>
+      <button onclick="go('analitica')">Analítica</button>
+      <button onclick="go('sheets')">Google Sheets</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap grid g2">
+  <section class="card" id="perfil">
+    <h2>1) Perfil del aspirante</h2>
+    <div class="grid g3">
+      <div><label>Nombre</label><input id="nombre" placeholder="Docente aspirante"></div>
+      <div><label>Nivel</label><select id="nivel"><option>Primaria</option><option>Preescolar</option></select></div>
+      <div><label>Meta</label><select id="meta"><option>Ingreso</option><option>Ascenso</option><option>Reubicación</option></select></div>
+    </div>
+    <div class="grid g3">
+      <div><label>Horas semanales disponibles</label><input id="horas" type="number" value="8"></div>
+      <div><label>Fecha objetivo</label><input id="fecha" type="date"></div>
+      <div><label>Prioridad</label><select id="prioridad"><option>Pedagogía y didáctica</option><option>Competencias lectoras</option><option>Normatividad</option><option>Socioemocional y aula</option></select></div>
+    </div>
+    <label>Observaciones</label>
+    <textarea id="obs" rows="3" placeholder="Fortalezas, debilidades, contexto de estudio..."></textarea>
+    <div class="row" style="margin-top:12px">
+      <button onclick="guardarPerfil()">Guardar perfil</button>
+      <button class="secondary" onclick="exportarJSON()">Exportar respaldo JSON</button>
+      <button class="secondary" onclick="importarJSON()">Importar JSON</button>
+      <button class="bad" onclick="borrarDatosLocales()">Borrar datos locales</button>
+      <input id="importFile" type="file" accept=".json" style="display:none" />
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Panel general</h2>
+    <div class="grid g2">
+      <div class="kpi"><div class="small">Avance del plan</div><div class="n" id="kpiAvance">0%</div><div class="progress"><span id="barAvance" style="width:0%"></span></div></div>
+      <div class="kpi"><div class="small">Promedio simulacros</div><div class="n" id="kpiProm">0%</div><div class="progress"><span id="barProm" style="width:0%"></span></div></div>
+      <div class="kpi"><div class="small">Preguntas resueltas</div><div class="n" id="kpiPreg">0</div></div>
+      <div class="kpi"><div class="small">Errores registrados</div><div class="n" id="kpiErr">0</div></div>
+    </div>
+    <hr>
+    <div id="alertas" class="small"></div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="card" id="diagnostico">
+    <h2>2) Diagnóstico inicial</h2>
+    <p class="small">Asigne un puntaje de 1 a 5 para estimar su línea base. El sistema prioriza automáticamente el refuerzo.</p>
+    <div class="grid g4" id="diagGrid"></div>
+    <div class="row" style="margin-top:12px">
+      <button onclick="guardarDiagnostico()">Guardar diagnóstico</button>
+      <button class="good" onclick="generarRuta()">Generar ruta priorizada</button>
+    </div>
+    <div id="ruta" style="margin-top:14px"></div>
+  </section>
+</div>
+
+<div class="wrap grid g2">
+  <section class="card" id="modulos">
+    <h2>3) Módulos de estudio V6</h2>
+    <div id="modulosBox"></div>
+  </section>
+
+  <section class="card" id="plan">
+    <h2>4) Plan de estudio de 16 semanas</h2>
+    <div class="row">
+      <button onclick="renderPlan()">Regenerar plan</button>
+      <button class="secondary" onclick="marcarSemanaActual()">Marcar semana actual como completada</button>
+    </div>
+    <div id="planBox" style="margin-top:12px"></div>
+  </section>
+</div>
+
+<div class="wrap grid g2">
+  <section class="card" id="simulador">
+    <h2>5) Simulador de pruebas</h2>
+    <div class="row">
+      <select id="simTipo">
+        <option value="corto">Simulacro corto (10)</option>
+        <option value="medio">Simulacro medio (20)</option>
+        <option value="integral">Simulacro integral (30)</option>
+      </select>
+      <button onclick="iniciarSimulacro()">Iniciar</button>
+      <button class="secondary" onclick="reiniciarSimulacro()">Reiniciar</button>
+    </div>
+    <div id="simBox" style="margin-top:14px"></div>
+  </section>
+
+  <section class="card" id="banco">
+    <h2>6) Banco de preguntas</h2>
+    <div class="row">
+      <select id="filtroArea"></select>
+      <input id="buscarPregunta" placeholder="Buscar por palabra clave..." />
+      <button onclick="renderBanco()">Filtrar</button>
+    </div>
+    <div id="bancoBox" style="margin-top:12px"></div>
+  </section>
+</div>
+
+<div class="wrap grid g2">
+  <section class="card" id="casos">
+    <h2>7) Casos pedagógicos para argumentación</h2>
+    <div id="casosBox"></div>
+  </section>
+
+  <section class="card" id="analitica">
+    <h2>8) Analítica, bitácora y retroalimentación</h2>
+    <div id="analiticaBox"></div>
+    <hr>
+    <h3>Bitácora de errores</h3>
+    <div id="erroresBox"></div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="card" id="sheets">
+    <h2>9) Integración con Google Sheets / Apps Script</h2>
+    <p class="small">Esta V6 queda preparada para integrar cuando me compartas el <strong>ID de la hoja</strong> y la <strong>URL del Web App de Apps Script</strong>.</p>
+    <div class="grid g2">
+      <div>
+        <label>Google Sheet ID</label><input id="sheetId" placeholder="Pegar ID de la hoja">
+        <label>URL Web App Apps Script</label><input id="webAppUrl" placeholder="Pegar URL desplegada">
+      </div>
+      <div>
+        <label>Estado</label>
+        <div class="kpi"><div id="sheetStatus">Sin configurar</div></div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button onclick="guardarConfigSheets()">Guardar configuración</button>
+      <button class="good" onclick="syncToSheets()">Sincronizar ahora</button>
+      <button class="secondary" onclick="syncPartial('perfil')">Enviar perfil</button>
+      <button class="secondary" onclick="syncPartial('simulacros')">Enviar simulacros</button>
+      <button class="secondary" onclick="probarPayload()">Ver payload de prueba</button>
+    </div>
+    <pre id="payloadDemo" style="white-space:pre-wrap;background:#0e152a;padding:12px;border-radius:12px;border:1px solid var(--line);margin-top:12px"></pre>
+  </section>
+</div>
+
+<script>
+const state = JSON.parse(localStorage.getItem('bootcampV6')||'{}');
+const areas = [
+  "Pedagogía y didáctica","Planeación curricular","Evaluación del aprendizaje","Inclusión y atención a la diversidad",
+  "Convivencia y clima escolar","Competencias lectoras","Razonamiento cuantitativo básico","Normatividad educativa",
+  "Gestión de aula","Socioemocional y ética docente"
+];
+const modulos = [
+  {titulo:"Fundamentos pedagógicos y didáctica en primaria", objetivos:["Enfoques pedagógicos","Diseño de secuencias","Didácticas activas"], micro:["Constructivismo y aprendizaje significativo","ABP y aprendizaje cooperativo","Secuencia didáctica y mediación"]},
+  {titulo:"Planeación curricular, DBA y evaluación", objetivos:["Articular currículo","Definir evidencias","Usar evaluación formativa"], micro:["Resultados de aprendizaje","Rúbricas y criterios","Retroalimentación efectiva"]},
+  {titulo:"Inclusión, PIAR, ajustes razonables y DUA", objetivos:["Responder a la diversidad","Diseñar apoyos","Prevenir barreras"], micro:["DUA aplicado al aula","PIAR y seguimiento","Ajustes y flexibilización"]},
+  {titulo:"Convivencia, enfoque restaurativo y protección", objetivos:["Gestionar conflictos","Activar rutas","Fortalecer ciudadanía"], micro:["Manual de convivencia","Debido proceso escolar","Prevención del acoso"]},
+  {titulo:"Competencias lectoras y argumentación", objetivos:["Comprensión literal, inferencial y crítica","Análisis de ítems","Sustento pedagógico"], micro:["Tipos de pregunta","Estrategias de lectura","Justificación de respuesta"]},
+  {titulo:"Normatividad y función docente", objetivos:["Reconocer marco legal","Comprender responsabilidades","Aplicar protocolos"], micro:["Constitución y derecho a la educación","Ley 115 y Decreto 1278/2277","Evaluación y deberes del servidor"]},
+  {titulo:"Gestión de aula y desarrollo socioemocional", objetivos:["Regular clima de aula","Manejo de rutinas","Acompañar desarrollo"], micro:["Acuerdos y rutinas","Autorregulación","Comunicación con familias"]},
+  {titulo:"Razonamiento cuantitativo básico para primaria", objetivos:["Resolver problemas básicos","Leer tablas y gráficos","Aplicar proporcionalidad y lógica"], micro:["Operaciones y contextos","Interpretación de datos","Estrategias de resolución"]}
+];
+const banco = [
+  {area:"Pedagogía y didáctica", q:"Una docente desea promover aprendizaje significativo en 3° usando el contexto del barrio. ¿Qué decisión se alinea mejor con ese enfoque?", op:["Memorizar definiciones antes de iniciar","Partir de saberes previos y resolver un problema del entorno","Aplicar una prueba sorpresa sin mediación","Usar solo exposición magistral"], ok:1, exp:"El aprendizaje significativo conecta nuevos contenidos con saberes previos y contextos reales."},
+  {area:"Planeación curricular", q:"La evidencia más consistente de evaluación formativa es:", op:["La nota final del periodo","La retroalimentación continua para ajustar enseñanza y aprendizaje","La citación a padres por bajo rendimiento","El examen acumulativo al cierre"], ok:1, exp:"La evaluación formativa produce información para mejorar durante el proceso."},
+  {area:"Inclusión y atención a la diversidad", q:"El DUA busca principalmente:", op:["Homogeneizar la enseñanza","Ofrecer múltiples formas de representación, acción y motivación","Eliminar toda evaluación","Separar a estudiantes con apoyos"], ok:1, exp:"El Diseño Universal para el Aprendizaje reduce barreras desde el diseño de la experiencia."},
+  {area:"Convivencia y clima escolar", q:"Ante un conflicto recurrente entre estudiantes, la acción más pertinente es:", op:["Ignorarlo para no escalarlo","Aplicar solo castigo escrito","Escuchar versiones, restaurar acuerdos y activar ruta si corresponde","Publicar el caso frente al curso"], ok:2, exp:"La gestión pedagógica del conflicto exige escucha, proporcionalidad y enfoque restaurativo."},
+  {area:"Competencias lectoras", q:"Una pregunta inferencial exige al estudiante:", op:["Copiar una frase textual","Relacionar pistas del texto para concluir algo no explícito","Ordenar alfabéticamente palabras","Recordar la fecha del autor"], ok:1, exp:"Inferir implica construir significado a partir de evidencias del texto."},
+  {area:"Normatividad educativa", q:"La Ley 115 de 1994 se relaciona con:", op:["Reglamentación del tránsito","Marco general del servicio público educativo","Régimen tributario municipal","Estatuto del consumidor"], ok:1, exp:"La Ley General de Educación establece fines, estructura y orientaciones del servicio educativo."},
+  {area:"Gestión de aula", q:"Una rutina de entrada efectiva en primaria debería:", op:["Depender del estado de ánimo del docente","Ser previsible, breve y orientar el inicio de la actividad","Eliminar toda interacción","Cambiar cada día sin explicación"], ok:1, exp:"Las rutinas claras reducen tiempos muertos y mejoran el clima."},
+  {area:"Razonamiento cuantitativo básico", q:"Si 4 cuadernos cuestan 20.000, 6 cuadernos cuestan:", op:["24.000","26.000","30.000","36.000"], ok:2, exp:"Costo unitario 5.000; 6 cuadernos cuestan 30.000."},
+  {area:"Socioemocional y ética docente", q:"Una práctica coherente con educación socioemocional es:", op:["Ridiculizar el error para corregir rápido","Nombrar emociones, enseñar autorregulación y cuidar el vínculo","Evitar toda conversación emocional","Delegar el tema únicamente a orientación"], ok:1, exp:"El desarrollo socioemocional se trabaja de forma transversal en el aula."}
+];
+while(banco.length<36){ const base=banco[banco.length%9]; banco.push({...base,q:base.q+" (Variante "+(banco.length-8)+")"}); }
+
+const casos = [
+  {titulo:"Bajo desempeño lector en 4°", caso:"El curso muestra dificultades para inferir información en textos narrativos. Además, algunos estudiantes no participan por temor a equivocarse.", claves:["diagnóstico lector","secuencia didáctica","andamiaje","evaluación formativa","clima seguro"]},
+  {titulo:"Convivencia y agresión verbal", caso:"Dos estudiantes protagonizan agresiones verbales recurrentes y el grupo empieza a imitarlas.", claves:["enfoque restaurativo","acuerdos","seguimiento","familias","manual de convivencia"]},
+  {titulo:"Atención a la diversidad", caso:"En el grupo hay una estudiante con barreras para el aprendizaje que requiere flexibilización de acceso y participación.", claves:["DUA","ajustes razonables","PIAR","trabajo con apoyo","evidencias diferenciadas"]}
+];
+
+function save(){ localStorage.setItem('bootcampV6', JSON.stringify(state)); renderKPIs(); }
+function go(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function init(){
+  state.perfil ||= {}; state.diag ||= {}; state.plan ||= []; state.logs ||= []; state.errores ||= []; state.stats ||= {preguntas:0,correctas:0};
+  state.sheets ||= {id: (window.BOOTCAMP_SHEET_CONFIG||{}).SHEET_ID || "1UhYVKzGJkA_QtDwWkpI2oFfTO8-QNgujPbZ7kRdYuVI", url: (window.BOOTCAMP_SHEET_CONFIG||{}).WEB_APP_URL || "https://script.google.com/macros/s/AKfycbx8kP0YY2hBF7eg6OVvrW1NrIz2iraUrKoZ9PCgfhKJNwUhGTGD1rrZoz9eNXZVlOpQDg/exec"};
+  ['nombre','nivel','meta','horas','fecha','prioridad','obs'].forEach(id=>{ if(state.perfil[id]!=null) document.getElementById(id).value=state.perfil[id];});
+  renderDiag(); renderModulos(); renderPlan(); fillFiltro(); renderBanco(); renderCasos(); renderAnalitica(); renderKPIs();
+}
+function guardarPerfil(){ ['nombre','nivel','meta','horas','fecha','prioridad','obs'].forEach(id=>state.perfil[id]=document.getElementById(id).value); save(); alert('Perfil guardado');}
+function renderDiag(){ const box=document.getElementById('diagGrid'); box.innerHTML=''; areas.forEach(a=>{ const v=state.diag[a]||3; box.innerHTML+=`<div class="kpi"><label>${a}</label><input type="range" min="1" max="5" value="${v}" oninput="state.diag['${a}']=Number(this.value); this.nextElementSibling.textContent=this.value"><div style="text-align:right;font-weight:700">${v}</div></div>`; });}
+function guardarDiagnostico(){ save(); alert('Diagnóstico guardado');}
+function generarRuta(){
+  const ordered=[...areas].sort((a,b)=>(state.diag[a]||3)-(state.diag[b]||3));
+  document.getElementById('ruta').innerHTML='<h3>Ruta priorizada de refuerzo</h3>'+ordered.map((a,i)=>`<div class="pill">#${i+1} ${a} · nivel ${state.diag[a]||3}</div>`).join('');
+}
+function renderModulos(){
+  document.getElementById('modulosBox').innerHTML = modulos.map((m,i)=>`
+    <details ${i<2?'open':''}><summary>${i+1}. ${m.titulo}</summary>
+      <p><strong>Objetivos:</strong> ${m.objetivos.join(' · ')}</p>
+      <p><strong>Microlecciones:</strong></p>
+      <ul>${m.micro.map(x=>`<li>${x}</li>`).join('')}</ul>
+    </details>`).join('');
+}
+function renderPlan(){
+  if(!state.plan.length){
+    state.plan = Array.from({length:16},(_,i)=>({semana:i+1, tema:modulos[i%modulos.length].titulo, foco:areas[i%areas.length], hecho:false}));
+    save();
+  }
+  document.getElementById('planBox').innerHTML = state.plan.map(s=>`
+    <div class="kpi" style="margin-bottom:10px">
+      <div class="row" style="justify-content:space-between">
+        <div><strong>Semana ${s.semana}</strong> · ${s.tema}<div class="small">Foco: ${s.foco}</div></div>
+        <div><span class="badge">${s.hecho?'Completada':'Pendiente'}</span></div>
+      </div>
+    </div>`).join('');
+}
+function marcarSemanaActual(){ const p=state.plan.find(x=>!x.hecho); if(p){p.hecho=true; save(); renderPlan();} }
+function fillFiltro(){ const f=document.getElementById('filtroArea'); f.innerHTML='<option value="">Todas las áreas</option>'+areas.map(a=>`<option>${a}</option>`).join(''); }
+function renderBanco(){
+  const area=document.getElementById('filtroArea').value; const q=document.getElementById('buscarPregunta').value.toLowerCase().trim();
+  const list=banco.filter(x=>(!area||x.area===area)&&(!q||x.q.toLowerCase().includes(q)||x.area.toLowerCase().includes(q)));
+  document.getElementById('bancoBox').innerHTML = list.slice(0,20).map((b,i)=>`
+    <details><summary>${b.area}: ${b.q}</summary>
+      <ol type="A">${b.op.map(o=>`<li>${o}</li>`).join('')}</ol>
+      <div class="small"><strong>Respuesta:</strong> ${String.fromCharCode(65+b.ok)} · ${b.exp}</div>
+    </details>`).join('') || '<div class="small">Sin resultados.</div>';
+}
+function iniciarSimulacro(){
+  const tipo=document.getElementById('simTipo').value; const n=tipo==='corto'?10:tipo==='medio'?20:30;
+  const qs=[...banco].sort(()=>Math.random()-.5).slice(0,n);
+  state.simActual={tipo,qs,resp:{},enviado:false}; save(); renderSim();
+}
+function reiniciarSimulacro(){ state.simActual=null; save(); document.getElementById('simBox').innerHTML=''; }
+function renderSim(){
+  const box=document.getElementById('simBox'); const sim=state.simActual; if(!sim){ box.innerHTML='<div class="small">No hay simulacro activo.</div>'; return;}
+  box.innerHTML = sim.qs.map((q,i)=>`<div class="kpi" style="margin-bottom:10px"><strong>${i+1}. [${q.area}]</strong> ${q.q}<div>${q.op.map((o,j)=>`<label><input type="radio" name="q${i}" ${sim.resp[i]==j?'checked':''} onchange="state.simActual.resp[${i}]=${j}; save()"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}</div></div>`).join('')
+  + `<div class="row"><button class="good" onclick="calificarSim()">Calificar simulacro</button></div>`;
+}
+function calificarSim(){
+  const sim=state.simActual; let ok=0; let retro=[]; let porArea={};
+  sim.qs.forEach((q,i)=>{
+    porArea[q.area] ||= {ok:0,total:0}; porArea[q.area].total++;
+    state.stats.preguntas++;
+    if(sim.resp[i]===q.ok){ ok++; porArea[q.area].ok++; state.stats.correctas++; }
+    else{
+      state.errores.push({fecha:new Date().toISOString(),area:q.area,pregunta:q.q,correcta:q.ok,marcada:sim.resp[i],exp:q.exp});
+      retro.push(`<li><strong>${q.area}</strong>: ${q.q}<br>Tu respuesta: ${sim.resp[i]!=null?String.fromCharCode(65+sim.resp[i]):'Sin responder'} · Correcta: ${String.fromCharCode(65+q.ok)}<br><span class="small">${q.exp}</span></li>`);
+    }
+  });
+  const score=Math.round(ok*100/sim.qs.length);
+  state.logs.push({fecha:new Date().toISOString(),tipo:sim.tipo,puntaje:score,porArea});
+  save(); renderAnalitica();
+  document.getElementById('simBox').innerHTML = `<div class="kpi"><h3>Resultado: ${score}% (${ok}/${sim.qs.length})</h3>
+    <p class="small">Retroalimentación automática: revisa primero las áreas con menor desempeño y vuelve a presentar un simulacro corto en 48 horas.</p>
+    <h4>Retroalimentación por error</h4><ol>${retro.join('')||'<li>No hubo errores. Excelente resultado.</li>'}</ol></div>`;
+}
+function renderCasos(){
+  document.getElementById('casosBox').innerHTML = casos.map(c=>`
+    <details><summary>${c.titulo}</summary>
+      <p>${c.caso}</p>
+      <p><strong>Pistas para responder:</strong> ${c.claves.map(k=>`<span class="pill">${k}</span>`).join('')}</p>
+      <p class="small"><strong>Ruta sugerida de análisis:</strong> 1) identificar problema pedagógico, 2) justificar con enfoque/ norma, 3) proponer intervención, 4) definir seguimiento y evaluación.</p>
+    </details>`).join('');
+}
+function renderAnalitica(){
+  const logs=state.logs||[]; const prom=logs.length?Math.round(logs.reduce((a,b)=>a+b.puntaje,0)/logs.length):0;
+  let html='<h3>Historial de simulacros</h3>';
+  html += logs.length?'<table><tr><th>Fecha</th><th>Tipo</th><th>Puntaje</th><th>Áreas a reforzar</th></tr>'+
+    logs.map(l=>{const worst=Object.entries(l.porArea||{}).sort((a,b)=>(a[1].ok/a[1].total)-(b[1].ok/b[1].total)).slice(0,2).map(x=>x[0]).join(', ');
+      return `<tr><td>${new Date(l.fecha).toLocaleString()}</td><td>${l.tipo}</td><td>${l.puntaje}%</td><td>${worst||'-'}</td></tr>`}).join('')+'</table>':'<div class="small">Sin simulacros aún.</div>';
+  document.getElementById('analiticaBox').innerHTML=html;
+  document.getElementById('erroresBox').innerHTML=(state.errores||[]).slice(-15).reverse().map(e=>`
+    <div class="kpi" style="margin-bottom:8px"><strong>${e.area}</strong><div>${e.pregunta}</div><div class="small">Correcta: ${String.fromCharCode(65+e.correcta)} · Marcada: ${e.marcada!=null?String.fromCharCode(65+e.marcada):'Sin responder'}<br>${e.exp}</div></div>
+  `).join('') || '<div class="small">Sin errores registrados.</div>';
+}
+function renderKPIs(){
+  const avance = state.plan?.length ? Math.round(state.plan.filter(x=>x.hecho).length*100/state.plan.length) : 0;
+  const prom = state.logs?.length ? Math.round(state.logs.reduce((a,b)=>a+b.puntaje,0)/state.logs.length) : 0;
+  document.getElementById('kpiAvance').textContent=avance+'%'; document.getElementById('barAvance').style.width=avance+'%';
+  document.getElementById('kpiProm').textContent=prom+'%'; document.getElementById('barProm').style.width=prom+'%';
+  document.getElementById('kpiPreg').textContent=state.stats?.preguntas||0; document.getElementById('kpiErr').textContent=(state.errores||[]).length;
+  const al=[]; if(prom<70&&state.logs?.length) al.push('El promedio sigue por debajo de 70%. Prioriza simulacros cortos + repaso de errores.'); if(avance<40) al.push('El plan de 16 semanas avanza lento. Programa dos bloques de estudio adicionales esta semana.');
+  document.getElementById('alertas').innerHTML = al.length?al.map(x=>`<div class="pill">${x}</div>`).join(''):'Sin alertas críticas por ahora.';
+}
+function exportarJSON(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='bootcamp-v6-respaldo.json'; a.click();
+}
+function borrarDatosLocales(){
+  if(!confirm('Esto borrará el perfil, diagnóstico, plan, simulacros y errores guardados en este navegador. ¿Continuar?')) return;
+  if(!confirm('Confirma de nuevo: esta acción no se puede deshacer (recomendado: exporta un respaldo JSON antes).')) return;
+  localStorage.removeItem('bootcampV6');
+  location.reload();
+}
+function importarJSON(){ const inp=document.getElementById('importFile'); inp.onchange=e=>{const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=()=>{Object.assign(state, JSON.parse(r.result)); save(); location.reload();}; r.readAsText(f)}; inp.click();}
+function guardarConfigSheets(){ state.sheets={id:sheetId.value,url:webAppUrl.value}; save(); document.getElementById('sheetStatus').textContent='Configuración guardada localmente';}
+function probarPayload(){
+  const payload={perfil:state.perfil||{},ultimoSimulacro:(state.logs||[]).slice(-1)[0]||null,erroresRecientes:(state.errores||[]).slice(-5),timestamp:new Date().toISOString()};
+  document.getElementById('payloadDemo').textContent=JSON.stringify(payload,null,2);
+}
+
+function buildPayload(tipo='sync_manual'){
+  return {
+    action: tipo,
+    timestamp: new Date().toISOString(),
+    perfil: state.perfil || {},
+    diagnostico: state.diag || {},
+    plan: state.plan || [],
+    logs: state.logs || [],
+    errores: state.errores || [],
+    stats: state.stats || {}
+  };
+}
+async function syncPartial(tipo){
+  const payload = buildPayload('sync_'+tipo);
+  if(tipo==='perfil'){ payload.logs=[]; payload.errores=[]; }
+  if(tipo==='simulacros'){ payload.perfil={}; payload.diagnostico={}; payload.plan=[]; }
+  return syncPayload(payload);
+}
+let syncing = false;
+async function syncPayload(payload){
+  const cfg = state.sheets || {};
+  if(!cfg.url){ alert('No hay URL de Apps Script configurada.'); return; }
+  if(syncing){ return; }
+  syncing = true;
+  const btns = document.querySelectorAll('#sheets button');
+  btns.forEach(b=>b.disabled = true);
+  document.getElementById('sheetStatus').textContent = 'Sincronizando...';
+  try{
+    const res = await fetch(cfg.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body: JSON.stringify(payload)});
+    const txt = await res.text();
+    document.getElementById('sheetStatus').textContent = 'Sincronizado correctamente';
+    document.getElementById('payloadDemo').textContent = 'Respuesta del servidor:\n' + txt + '\n\nPayload enviado:\n' + JSON.stringify(payload,null,2);
+  }catch(err){
+    document.getElementById('sheetStatus').textContent = 'No se pudo confirmar la respuesta (revisa la hoja para verificar si guardó)';
+    document.getElementById('payloadDemo').textContent = 'Error: ' + err.message + '\n\nPayload pendiente:\n' + JSON.stringify(payload,null,2);
+  }finally{
+    syncing = false;
+    btns.forEach(b=>b.disabled = false);
+  }
+}
+async function syncToSheets(){ return syncPayload(buildPayload('sync_manual')); }
+
+function generarReporteDocente(){
+  const nombre = (state.perfil&&state.perfil.nombre)||'Docente aspirante';
+  const logs = state.logs||[];
+  const errores = state.errores||[];
+  const plan = state.plan||[];
+  const prom = logs.length ? Math.round(logs.reduce((a,b)=>a+b.puntaje,0)/logs.length) : 0;
+  const avance = plan.length ? Math.round(plan.filter(x=>x.hecho).length*100/plan.length) : 0;
+
+  const deb = {};
+  errores.forEach(e=>{ deb[e.area]=(deb[e.area]||0)+1; });
+  const topDeb = Object.entries(deb).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
+
+  const fortalezas = [];
+  const alertas = [];
+  if(prom>=80) fortalezas.push('Desempeño alto en simulacros.');
+  if(avance>=60) fortalezas.push('Buen ritmo de cumplimiento del plan de estudio.');
+  if((state.stats?.preguntas||0)>=50) fortalezas.push('Exposición suficiente al banco de preguntas.');
+  if(prom<70) alertas.push('Promedio general por debajo de la meta recomendada.');
+  if(avance<50) alertas.push('El avance del plan aún es bajo frente a la meta.');
+  if(topDeb.length) alertas.push('Persisten errores frecuentes en: ' + topDeb.join(', ') + '.');
+
+  const rec = [
+    'Realizar 2 simulacros cortos por semana con revisión completa de errores.',
+    'Convertir cada error en una ficha de estudio con norma, concepto y ejemplo de aula.',
+    'Reforzar primero las áreas con mayor frecuencia de error y luego repetir un simulacro focalizado.'
+  ];
+
+  const txt = `REPORTE DOCENTE V6.2\n\nAspirante: ${nombre}\nNivel: ${(state.perfil&&state.perfil.nivel)||'Primaria'}\nMeta: ${(state.perfil&&state.perfil.meta)||'Ingreso'}\n\n1. INDICADORES\n- Avance del plan: ${avance}%\n- Promedio simulacros: ${prom}%\n- Preguntas resueltas: ${(state.stats&&state.stats.preguntas)||0}\n- Errores registrados: ${errores.length}\n\n2. FORTALEZAS\n${(fortalezas.length?fortalezas:['Aún no hay suficientes datos para determinar fortalezas claras.']).map(x=>'- '+x).join('\n')}\n\n3. ALERTAS\n${(alertas.length?alertas:['Sin alertas críticas por ahora.']).map(x=>'- '+x).join('\n')}\n\n4. ÁREAS PRIORITARIAS DE REFUERZO\n${(topDeb.length?topDeb:['Sin áreas críticas detectadas todavía.']).map(x=>'- '+x).join('\n')}\n\n5. RECOMENDACIONES\n${rec.map(x=>'- '+x).join('\n')}\n`;
+  document.getElementById('reporteDocente').value = txt;
+}
+function copiarReporte(){
+  const t=document.getElementById('reporteDocente');
+  const texto = t.value;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(texto).then(
+      ()=>alert('Reporte copiado al portapapeles'),
+      ()=>{ t.select(); document.execCommand('copy'); }
+    );
+  } else {
+    t.select();
+    document.execCommand('copy');
+  }
+}
+
+window.onload=()=>{init(); renderSim(); document.getElementById('sheetId').value=(state.sheets&&state.sheets.id)||''; document.getElementById('webAppUrl').value=(state.sheets&&state.sheets.url)||''; document.getElementById('sheetStatus').textContent=(state.sheets&&state.sheets.url)?'Configurado y listo para sincronizar':'Sin configurar';}
+</script>
+
+<div class="wrap">
+  <section class="card" id="reporte">
+    <h2>10) Reporte docente</h2>
+    <p class="small">Resumen ejecutivo del avance del aspirante con fortalezas, alertas y recomendaciones de estudio.</p>
+    <div class="row">
+      <button onclick="generarReporteDocente()">Generar reporte</button>
+      <button class="secondary" onclick="copiarReporte()">Copiar reporte</button>
+    </div>
+    <textarea id="reporteDocente" rows="14" style="margin-top:12px"></textarea>
+  </section>
+</div>
+
+</body>
+</html>
