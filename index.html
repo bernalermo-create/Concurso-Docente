@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bootcamp Concurso Docente Primaria</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Bootcamp Concurso Docente – Primaria</h1>
+    <p>Preparación con módulos, simulacros y retroalimentación.</p>
+  </header>
+
+  <section class="card">
+    <h2>Ingreso</h2>
+    <form id="loginForm">
+      <input id="teacherName" placeholder="Nombre del docente" required>
+      <button>Entrar</button>
+    </form>
+    <p id="welcome"></p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Módulos de estudio</h3>
+      <ul id="modules"></ul>
+    </div>
+    <div class="card">
+      <h3>Simulacro</h3>
+      <div id="quiz"></div>
+      <button id="submitQuiz">Enviar simulacro</button>
+      <div id="result"></div>
+    </div>
+  </section>
+</div>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
